@@ -1,17 +1,20 @@
 import { initialColors } from "./lib/colors";
-import Color from "./Components/Color/Color";
+import Color from "./Components/Color/Color.jsx";
 import "./App.css";
 
-function App() {
+export default function App() {
   return (
     <>
       <h1>Theme Creator</h1>
-
-      {initialColors.map((color) => {
-        return <Color key={color.id} color={color} />;
-      })}
+      <ul>
+        {initialColors.map((color) => {
+          return (
+            <li key={color.id}>
+              <Color color={color} />
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 }
-
-export default App;
