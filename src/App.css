@@ -2,3 +2,8 @@ body {
   font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   padding: 10px;
 }
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
