@@ -13,6 +13,11 @@ export default function App() {
     setColors([newColor, ...colors]);
   }
 
+  function deleteColor(id) {
+    const updatedColors = colors.filter((color) => color.id !== id);
+    setColors(updatedColors);
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
@@ -20,8 +25,11 @@ export default function App() {
       <ul>
         {colors.map((color) => {
           return (
-            <li key={color.id}>
+            <li key={color.id} className="color-item">
               <Color color={color} />
+              <button type="button" onClick={() => deleteColor(color.id)}>
+                DELETE
+              </button>
             </li>
           );
         })}
