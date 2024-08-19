@@ -8,6 +8,7 @@ import { useState } from "react";
 export default function App() {
   const [colors, setColors] = useState(initialColors);
   const [showDeleteButton, setShowDeleteButton] = useState(null);
+  const [buttonText, setButtonText] = useState({});
 
   function addColor(newColor) {
     console.log("New color added:", newColor);
@@ -36,7 +37,7 @@ export default function App() {
                 type="button"
                 onClick={() => toggleDeleteButton(color.id)}
               >
-                DELETE
+                {showDeleteButton === color.id ? "Really delete?" : "DELETE"}
               </button>
               {showDeleteButton === color.id && (
                 <button type="button" onClick={() => deleteColor(color.id)}>
