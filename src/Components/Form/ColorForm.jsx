@@ -1,5 +1,6 @@
 import "./ColorForm.css";
 import { uid } from "uid";
+import ColorInput from "./ColorInput";
 
 export default function ColorForm({
   onAddColor,
@@ -32,19 +33,15 @@ export default function ColorForm({
         placeholder={initialData.role}
       />
       <label htmlFor="hex">Hex</label>
-      <input
+      <ColorInput
         className="input-field"
-        type="text"
         id="hex"
-        name="hex"
         placeholder={initialData.hex}
       />
       <label htmlFor="contrastText">Contrast Text</label>
-      <input
+      <ColorInput
         className="input-field"
-        type="text"
         id="contrastText"
-        name="contrastText"
         placeholder={initialData.contrastText}
       />
       <button className="button" type="submit">
