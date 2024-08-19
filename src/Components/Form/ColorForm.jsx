@@ -9,8 +9,16 @@ export default function ColorForm({
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    const newColor = { id: uid(), ...data };
+    const newColor = {
+      id: uid(),
+      role: data.role || initialData.role,
+      hex: data.hex || initialData.hex,
+      contrastText: data.contrastText || initialData.contrastText,
+    };
+    event.target.elements.role.focus();
+    // console.log("object data:", event.target.elements.role);
     onAddColor(newColor);
+    event.target.reset();
   }
 
   return (
@@ -21,7 +29,7 @@ export default function ColorForm({
         type="text"
         id="role"
         name="role"
-        defaultValue={initialData.role}
+        placeholder={initialData.role}
       />
       <label htmlFor="hex">Hex</label>
       <input
@@ -29,7 +37,7 @@ export default function ColorForm({
         type="text"
         id="hex"
         name="hex"
-        defaultValue={initialData.hex}
+        placeholder={initialData.hex}
       />
       <label htmlFor="contrastText">Contrast Text</label>
       <input
@@ -37,7 +45,7 @@ export default function ColorForm({
         type="text"
         id="contrastText"
         name="contrastText"
-        defaultValue={initialData.contrastText}
+        placeholder={initialData.contrastText}
       />
       <button className="button" type="submit">
         ADD COLOR
