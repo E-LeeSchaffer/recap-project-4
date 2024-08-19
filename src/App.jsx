@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function App() {
   const [colors, setColors] = useState(initialColors);
+  const [showDeleteButton, setShowDeleteButton] = useState(null);
 
   function addColor(newColor) {
     console.log("New color added:", newColor);
@@ -18,6 +19,10 @@ export default function App() {
     setColors(updatedColors);
   }
 
+  function toggleDeleteButton(id) {
+    setShowDeleteButton((prevId) => (prevId === id ? null : id));
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
@@ -27,9 +32,17 @@ export default function App() {
           return (
             <li key={color.id} className="color-item">
               <Color color={color} />
-              <button type="button" onClick={() => deleteColor(color.id)}>
+              <button
+                type="button"
+                onClick={() => toggleDeleteButton(color.id)}
+              >
                 DELETE
               </button>
+              {showDeleteButton === color.id && (
+                <button type="button" onClick={() => deleteColor(color.id)}>
+                  DELETE
+                </button>
+              )}
             </li>
           );
         })}
