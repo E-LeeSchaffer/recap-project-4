@@ -38,27 +38,13 @@ export default function App() {
           {colors.map((color) => {
             return (
               <li key={color.id} className="color-item">
-                <Color color={color} />
-                <button
-                  type="button"
-                  onClick={() => toggleDeleteButton(color.id)}
-                  className={
-                    showDeleteButton === color.id ? "really-delete-button" : ""
-                  }
-                >
-                  {showDeleteButton === color.id ? "Really delete?" : "DELETE"}
-                </button>
-                {showDeleteButton === color.id && (
-                  <>
-                    <button type="button" onClick={cancelDelete}>
-                      Cancel
-                    </button>
-
-                    <button type="button" onClick={() => deleteColor(color.id)}>
-                      DELETE
-                    </button>
-                  </>
-                )}
+                <Color
+                  color={color}
+                  onToggleDelete={toggleDeleteButton}
+                  showDeleteButton={showDeleteButton}
+                  onCancelDelete={cancelDelete}
+                  onDelete={deleteColor}
+                />
               </li>
             );
           })}
