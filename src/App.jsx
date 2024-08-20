@@ -8,7 +8,6 @@ import { useState } from "react";
 export default function App() {
   const [colors, setColors] = useState(initialColors);
   const [showDeleteButton, setShowDeleteButton] = useState(null);
-  const [buttonText, setButtonText] = useState({});
 
   function addColor(newColor) {
     console.log("New color added:", newColor);
@@ -24,30 +23,47 @@ export default function App() {
     setShowDeleteButton((prevId) => (prevId === id ? null : id));
   }
 
+  function cancelDelete() {
+    setShowDeleteButton(null);
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
       <ColorForm onAddColor={addColor} />
-      <ul>
-        {colors.map((color) => {
-          return (
-            <li key={color.id} className="color-item">
-              <Color color={color} />
-              <button
-                type="button"
-                onClick={() => toggleDeleteButton(color.id)}
-              >
-                {showDeleteButton === color.id ? "Really delete?" : "DELETE"}
-              </button>
-              {showDeleteButton === color.id && (
-                <button type="button" onClick={() => deleteColor(color.id)}>
-                  DELETE
+      {colors.length === 0 ? (
+        <p>No colors.. start by adding one!</p>
+      ) : (
+        <ul>
+          {colors.map((color) => {
+            return (
+              <li key={color.id} className="color-item">
+                <Color color={color} />
+                <button
+                  type="button"
+                  onClick={() => toggleDeleteButton(color.id)}
+                  className={
+                    showDeleteButton === color.id ? "really-delete-button" : ""
+                  }
+                >
+                  {showDeleteButton === color.id ? "Really delete?" : "DELETE"}
                 </button>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+                {showDeleteButton === color.id && (
+                  <>
+                    <button type="button" onClick={cancelDelete}>
+                      Cancel
+                    </button>
+
+                    <button type="button" onClick={() => deleteColor(color.id)}>
+                      DELETE
+                    </button>
+                  </>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </>
   );
 }
