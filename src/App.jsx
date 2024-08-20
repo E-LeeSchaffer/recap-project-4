@@ -7,7 +7,6 @@ import { useState } from "react";
 
 export default function App() {
   const [colors, setColors] = useState(initialColors);
-  const [showDeleteButton, setShowDeleteButton] = useState(null);
 
   function addColor(newColor) {
     console.log("New color added:", newColor);
@@ -17,14 +16,6 @@ export default function App() {
   function deleteColor(id) {
     const updatedColors = colors.filter((color) => color.id !== id);
     setColors(updatedColors);
-  }
-
-  function toggleDeleteButton(id) {
-    setShowDeleteButton((prevId) => (prevId === id ? null : id));
-  }
-
-  function cancelDelete() {
-    setShowDeleteButton(null);
   }
 
   return (
@@ -38,13 +29,7 @@ export default function App() {
           {colors.map((color) => {
             return (
               <li key={color.id} className="color-item">
-                <Color
-                  color={color}
-                  onToggleDelete={toggleDeleteButton}
-                  showDeleteButton={showDeleteButton}
-                  onCancelDelete={cancelDelete}
-                  onDelete={deleteColor}
-                />
+                <Color color={color} onDelete={deleteColor} />
               </li>
             );
           })}

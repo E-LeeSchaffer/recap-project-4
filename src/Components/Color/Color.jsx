@@ -1,12 +1,17 @@
+import { useState } from "react";
 import "./Color.css";
 
-export default function Color({
-  color,
-  onToggleDelete,
-  showDeleteButton,
-  onCancelDelete,
-  onDelete,
-}) {
+export default function Color({ color, onDelete }) {
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
+
+  function toggleDeleteButton() {
+    setShowDeleteButton(!showDeleteButton);
+  }
+
+  function cancelDelete() {
+    setShowDeleteButton(false);
+  }
+  console.log(color);
   return (
     <div
       className="color-card"
@@ -20,14 +25,14 @@ export default function Color({
       <p>contrast: {color.contrastText}</p>
       <button
         type="button"
-        onClick={() => onToggleDelete(color.id)}
-        className={showDeleteButton === color.id ? "really-delete-button" : ""}
+        onClick={toggleDeleteButton}
+        className={showDeleteButton ? "really-delete-button" : ""}
       >
-        {showDeleteButton === color.id ? "Really delete?" : "DELETE"}
+        {showDeleteButton ? "Really delete?" : "DELETE"}
       </button>
-      {showDeleteButton === color.id && (
+      {showDeleteButton && (
         <>
-          <button type="button" onClick={onCancelDelete}>
+          <button type="button" onClick={cancelDelete}>
             Cancel
           </button>
 
