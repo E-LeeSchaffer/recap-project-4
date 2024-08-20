@@ -13,19 +13,28 @@ export default function App() {
     setColors([newColor, ...colors]);
   }
 
+  function deleteColor(id) {
+    const updatedColors = colors.filter((color) => color.id !== id);
+    setColors(updatedColors);
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
       <ColorForm onAddColor={addColor} />
-      <ul>
-        {colors.map((color) => {
-          return (
-            <li key={color.id}>
-              <Color color={color} />
-            </li>
-          );
-        })}
-      </ul>
+      {colors.length === 0 ? (
+        <p>No colors.. start by adding one!</p>
+      ) : (
+        <ul>
+          {colors.map((color) => {
+            return (
+              <li key={color.id} className="color-item">
+                <Color color={color} onDelete={deleteColor} />
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </>
   );
 }
