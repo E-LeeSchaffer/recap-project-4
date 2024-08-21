@@ -1,12 +1,6 @@
 .input-form {
   display: flex;
   flex-direction: column;
-  width: 120px;
+  width: 80%;
   row-gap: 4px;
-}
-
-.button {
-  margin: 16px 0 16px 0;
-  border-radius: 12px;
-  background-color: white;
 }
