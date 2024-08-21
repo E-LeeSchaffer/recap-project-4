@@ -1,7 +1,6 @@
 import { initialColors } from "./lib/colors";
 import Color from "./Components/Color/Color.jsx";
 import "./App.css";
-import "./Components/Form/ColorButton.css";
 import ColorForm from "./Components/Form/ColorForm.jsx";
 import { useState } from "react";
 
@@ -18,6 +17,13 @@ export default function App() {
     setColors(updatedColors);
   }
 
+  function editColor(id, newProperties) {
+    const updatedColors = colors.map((color) =>
+      color.id === id ? { ...color, ...newProperties } : color
+    );
+    setColors(updatedColors);
+  }
+
   return (
     <>
       <h1>Theme Creator</h1>
@@ -29,7 +35,11 @@ export default function App() {
           {colors.map((color) => {
             return (
               <li key={color.id} className="color-item">
-                <Color color={color} onDelete={deleteColor} />
+                <Color
+                  color={color}
+                  onDelete={deleteColor}
+                  onEdit={editColor}
+                />
               </li>
             );
           })}

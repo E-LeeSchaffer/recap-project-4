@@ -3,7 +3,8 @@ import { uid } from "uid";
 import ColorInput from "./ColorInput";
 
 export default function ColorForm({
-  onAddColor,
+  onSubmit,
+  buttonText = "ADD COLOR",
   initialData = { role: "some color", hex: "#123456", contrastText: "#ffffff" },
 }) {
   function handleSubmit(event) {
@@ -11,7 +12,7 @@ export default function ColorForm({
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
     const newColor = {
-      id: uid(),
+      id: initialData || uid(),
       //   ...initialData,
       //   ...data,
       role: data.role || initialData.role,
@@ -20,7 +21,7 @@ export default function ColorForm({
     };
     event.target.elements.role.focus();
     // console.log("object data:", event.target.elements.role);
-    onAddColor(newColor);
+    onSubmit(newColor);
     event.target.reset();
   }
 
@@ -33,7 +34,7 @@ export default function ColorForm({
       <label htmlFor="contrastText">Contrast Text</label>
       <ColorInput id="contrastText" placeholder={initialData.contrastText} />
       <button className="button" type="submit">
-        ADD COLOR
+        {buttonText}
       </button>
     </form>
   );
