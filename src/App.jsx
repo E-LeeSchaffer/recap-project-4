@@ -27,7 +27,7 @@ export default function App() {
   return (
     <>
       <h1>Theme Creator</h1>
-      <ColorForm onAddColor={addColor} />
+      <ColorForm onSubmit={addColor} />
       {colors.length === 0 ? (
         <p>No colors.. start by adding one!</p>
       ) : (
