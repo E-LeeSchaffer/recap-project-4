@@ -33,7 +33,7 @@ export default function Color({ color, onDelete, onEdit }) {
     try {
       await navigator.clipboard.writeText(color.hex);
       console.log("Hex code copied to clipboard:", color.hex);
-      setConfirmationMessage("Color copied to clipboard");
+      setConfirmationMessage("SUCCESSFULLY COPIED!");
       setTimeout(() => {
         setConfirmationMessage("");
       }, 3000);
@@ -54,7 +54,7 @@ export default function Color({ color, onDelete, onEdit }) {
       <button type="button" onClick={handleCopy}>
         COPY
       </button>{" "}
-      <p>{confirmationMessage}</p>
+      <p className="notification-message">{confirmationMessage}</p>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
       {isEditing ? (
