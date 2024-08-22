@@ -6,7 +6,7 @@ import useLocalStorageState from "use-local-storage-state";
 
 export default function App() {
   const [colors, setColors] = useLocalStorageState("colors", {
-    defaultValue: [initialColors],
+    defaultValue: initialColors,
   });
 
   function addColor(newColor) {
