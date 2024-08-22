@@ -2,10 +2,12 @@ import { initialColors } from "./lib/colors";
 import Color from "./Components/Color/Color.jsx";
 import "./App.css";
 import ColorForm from "./Components/Form/ColorForm.jsx";
-import { useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function App() {
-  const [colors, setColors] = useState(initialColors);
+  const [colors, setColors] = useLocalStorageState("colors", {
+    defaultValue: [initialColors],
+  });
 
   function addColor(newColor) {
     console.log("New color added:", newColor);
