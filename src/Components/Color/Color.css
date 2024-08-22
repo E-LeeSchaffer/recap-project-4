@@ -19,3 +19,9 @@
   color: white;
   /* border-radius: 12px; */
 }
+
+.notification-message {
+  background-color: lightgrey;
+  display: inline-block;
+  color: black;
+}
