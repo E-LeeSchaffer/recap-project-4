@@ -5,9 +5,7 @@ import ColorForm from "../Form/ColorForm";
 export default function Color({ color, onDelete, onEdit }) {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  // const [editHex, setEditHex] = useState(color.hex);
-  // const [editRole, setEditRole] = useState(color.role);
-  // const [editContrastText, setEditContrastText] = useState(color.contrastText);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   function toggleDeleteButton() {
     setShowDeleteButton(!showDeleteButton);
@@ -31,6 +29,19 @@ export default function Color({ color, onDelete, onEdit }) {
     setIsEditing(false);
   }
 
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(color.hex);
+      console.log("Hex code copied to clipboard:", color.hex);
+      setConfirmationMessage("Color copied to clipboard");
+      setTimeout(() => {
+        setConfirmationMessage("");
+      }, 3000);
+    } catch (error) {
+      console.error("failed to copy text:", error.message);
+    }
+  }
+
   return (
     <div
       className="color-card"
@@ -40,10 +51,12 @@ export default function Color({ color, onDelete, onEdit }) {
       }}
     >
       <h3 className="color-card-headline">{color.hex}</h3>
-      <button type="button">COPY</button>
+      <button type="button" onClick={handleCopy}>
+        COPY
+      </button>{" "}
+      <p>{confirmationMessage}</p>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
-
       {isEditing ? (
         <>
           <ColorForm
