@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Color.css";
 import ColorForm from "../Form/ColorForm";
 
@@ -16,7 +16,7 @@ export default function Color({ color, onDelete, onEdit }) {
   }
   console.log(color);
 
-  function handleEdit() {
+  function handleEditMode() {
     setIsEditing(true);
   }
 
@@ -57,6 +57,7 @@ export default function Color({ color, onDelete, onEdit }) {
       <p className="notification-message">{confirmationMessage}</p>
       <h4>{color.role}</h4>
       <p>contrast: {color.contrastText}</p>
+      <ContrastDisplay hex={color.hex} contrastText={color.contrastText} />
       {isEditing ? (
         <>
           <ColorForm
@@ -79,7 +80,7 @@ export default function Color({ color, onDelete, onEdit }) {
             {showDeleteButton ? "Really delete?" : "DELETE"}
           </button>
           {!isEditing && !showDeleteButton && (
-            <button type="button" onClick={handleEdit}>
+            <button type="button" onClick={handleEditMode}>
               EDIT
             </button>
           )}
@@ -97,5 +98,45 @@ export default function Color({ color, onDelete, onEdit }) {
         </>
       )}
     </div>
+  );
+}
+
+function ContrastDisplay({ hex, contrastText }) {
+  const [fetchResult, setFetchResult] = useState(null);
+
+  //fetchData();
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          "https://www.aremycolorsaccessible.com/api/are-they",
+          {
+            method: "POST",
+            body: JSON.stringify({ colors: [hex, contrastText] }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch contrast data");
+        }
+
+        const contrastData = await response.json();
+        const contrastScore = contrastData.overall;
+        console.log(contrastData);
+        setFetchResult(contrastScore);
+      } catch (error) {
+        console.error("Error checking contrast:", error);
+        return "Error fetching contrast data";
+      }
+    }
+    fetchData();
+  }, [hex, contrastText]);
+  return (
+    <>
+      <p>Contrast Score: {fetchResult}</p>
+    </>
   );
 }

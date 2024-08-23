@@ -9,8 +9,9 @@ export default function App() {
     defaultValue: initialColors,
   });
 
-  function addColor(newColor) {
+  async function addColor(newColor) {
     console.log("New color added:", newColor);
+
     setColors([newColor, ...colors]);
   }
 
