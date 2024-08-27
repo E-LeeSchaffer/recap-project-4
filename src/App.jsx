@@ -3,6 +3,7 @@ import Color from "./Components/Color/Color.jsx";
 import "./App.css";
 import ColorForm from "./Components/Form/ColorForm.jsx";
 import useLocalStorageState from "use-local-storage-state";
+import ThemeDisplay from "./Components/Theme/ThemeDisplay.jsx";
 
 export default function App() {
   const [colors, setColors] = useLocalStorageState("colors", {
@@ -30,6 +31,7 @@ export default function App() {
   return (
     <>
       <h1>Theme Creator</h1>
+      <ThemeDisplay />
       <ColorForm onSubmit={addColor} />
       {colors.length === 0 ? (
         <p>No colors.. start by adding one!</p>

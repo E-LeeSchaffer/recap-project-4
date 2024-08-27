@@ -104,7 +104,6 @@ export default function Color({ color, onDelete, onEdit }) {
 function ContrastDisplay({ hex, contrastText }) {
   const [fetchResult, setFetchResult] = useState(null);
 
-  //fetchData();
   useEffect(() => {
     async function fetchData() {
       try {
@@ -113,27 +112,21 @@ function ContrastDisplay({ hex, contrastText }) {
           {
             method: "POST",
             body: JSON.stringify({ colors: [hex, contrastText] }),
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           }
         );
-
         if (!response.ok) {
           throw new Error("Failed to fetch contrast data");
         }
 
-        const contrastData = await response.json();
-        const contrastScore = contrastData.overall;
-        console.log(contrastData);
-        setFetchResult(contrastScore);
+        const data = await response.json();
+        setFetchResult(data.overall);
       } catch (error) {
-        console.error("Error checking contrast:", error);
         return "Error fetching contrast data";
       }
     }
     fetchData();
-  }, [hex, contrastText]);
+  }, [hex, contrastText]); //dependency array, damit nur gerendert wird, wenn diese zwei Elemente sich ändern
   return (
     <>
       <p>Contrast Score: {fetchResult}</p>
