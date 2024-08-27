@@ -1,49 +1,90 @@
-import { initialColors } from "./lib/colors";
 import Color from "./Components/Color/Color.jsx";
 import "./App.css";
 import ColorForm from "./Components/Form/ColorForm.jsx";
-import useLocalStorageState from "use-local-storage-state";
 import ThemeDisplay from "./Components/Theme/ThemeDisplay.jsx";
+import { useEffect, useState } from "react";
+import { initialThemes } from "./lib/themes.js";
 
 export default function App() {
-  const [colors, setColors] = useLocalStorageState("colors", {
-    defaultValue: initialColors,
-  });
+  const [themes, setThemes] = useState(initialThemes);
+  console.log("Themes:", themes);
+  const [selectedTheme, setSelectedTheme] = useState(themes[0]);
+  console.log("Selected Theme:", selectedTheme);
 
-  async function addColor(newColor) {
-    console.log("New color added:", newColor);
+  useEffect(() => {
+    if (themes.length > 0 && !selectedTheme) {
+      setSelectedTheme(themes[0]);
+    }
+  }, []);
 
-    setColors([newColor, ...colors]);
-  }
-
-  function deleteColor(id) {
-    const updatedColors = colors.filter((color) => color.id !== id);
-    setColors(updatedColors);
-  }
-
-  function editColor(id, newProperties) {
-    const updatedColors = colors.map((color) =>
-      color.id === id ? { ...color, ...newProperties } : color
+  async function addColorToTheme(newColor) {
+    const updatedThemes = themes.map((theme) =>
+      theme.id === selectedTheme.id
+        ? { ...theme, colors: [newColor, ...theme.colors] }
+        : theme
     );
-    setColors(updatedColors);
+
+    setThemes(updatedThemes);
+    setSelectedTheme(
+      updatedThemes.find((theme) => theme.id === selectedTheme.id)
+    );
+  }
+
+  function deleteColorFromTheme(colorId) {
+    const updatedThemes = themes.map((theme) =>
+      theme.id === selectedTheme.id
+        ? {
+            ...theme,
+            colors: theme.colors.filter((color) => color.id !== colorId),
+          }
+        : theme
+    );
+
+    setThemes(updatedThemes);
+    setSelectedTheme(
+      updatedThemes.find((theme) => theme.id === selectedTheme.id)
+    );
+  }
+
+  function editColorInTheme(colorId, newProperties) {
+    const updatedThemes = themes.map((theme) =>
+      theme.id === selectedTheme.id
+        ? {
+            ...theme,
+            colors: theme.colors.map((color) =>
+              color.id === colorId ? { ...color, ...newProperties } : color
+            ),
+          }
+        : theme
+    );
+
+    setThemes(updatedThemes);
+    setSelectedTheme(
+      updatedThemes.find((theme) => theme.id === selectedTheme.id)
+    );
   }
 
   return (
     <>
       <h1>Theme Creator</h1>
-      <ThemeDisplay />
-      <ColorForm onSubmit={addColor} />
-      {colors.length === 0 ? (
+      <ThemeDisplay
+        themes={themes}
+        selectedTheme={selectedTheme}
+        setSelectedTheme={setSelectedTheme}
+        setThemes={setThemes}
+      />
+      <ColorForm onSubmit={addColorToTheme} />
+      {selectedTheme && selectedTheme.colors.length === 0 ? (
         <p>No colors.. start by adding one!</p>
       ) : (
         <ul>
-          {colors.map((color) => {
+          {selectedTheme.colors.map((color) => {
             return (
               <li key={color.id} className="color-item">
                 <Color
                   color={color}
-                  onDelete={deleteColor}
-                  onEdit={editColor}
+                  onDelete={deleteColorFromTheme}
+                  onEdit={editColorInTheme}
                 />
               </li>
             );
